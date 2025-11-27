@@ -1,0 +1,628 @@
+:root {
+  /* Mode Clair (Light) */
+  --win11-text: #1f1f1f;
+  --win11-bg-light: #f3f3f3;
+  --win11-mica: rgba(243, 243, 243, 0.9);
+  --win11-acrylic: rgba(243, 243, 243, 0.7);
+  --win11-border: rgba(0, 0, 0, 0.1);
+  --win11-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  --win11-accent: #0067c0;
+  --win11-window-bg: white;
+  --win11-hover-bg: rgba(0, 0, 0, 0.08);
+  --win11-tile-bg: rgba(255, 255, 255, 0.7);
+  --win11-tile-text: #1f1f1f;
+}
+
+/* Mode Sombre (Dark) */
+.dark-mode {
+  --win11-text: #e0e0e0;
+  --win11-bg-light: #202020;
+  --win11-mica: rgba(32, 32, 32, 0.9);
+  --win11-acrylic: rgba(32, 32, 32, 0.7);
+  --win11-border: rgba(255, 255, 255, 0.15);
+  --win11-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  --win11-accent: #3296fa;
+  --win11-window-bg: #2b2b2b;
+  --win11-hover-bg: rgba(255, 255, 255, 0.08);
+  --win11-tile-bg: rgba(43, 43, 43, 0.7);
+  --win11-tile-text: #e0e0e0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body, #root {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  color: var(--win11-text);
+  background-color: var(--win11-bg-light);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: color-mix(in srgb, var(--win11-text) 20%, transparent);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in srgb, var(--win11-text) 40%, transparent);
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+
+/* --- Le Bureau --- */
+.desktop {
+  height: calc(100vh - 48px);
+  width: 100%;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  transition: background-image 0.5s ease-in-out;
+}
+
+.desktop-icon-container {
+  position: absolute;
+}
+
+.desktop-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90px;
+  cursor: grab;
+  padding: 8px 5px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  transition: background-color 0.1s, border 0.1s;
+}
+
+.desktop-icon:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.desktop-icon:active {
+  background-color: rgba(255, 255, 255, 0.25);
+  cursor: grabbing;
+}
+
+.desktop-icon .icon-img {
+  font-size: 36px;
+  margin-bottom: 5px;
+}
+
+.desktop-icon .icon-label {
+  font-size: 0.7rem;
+  color: white;
+  text-align: center;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.9);
+}
+
+/* --- Barre des Tâches (Taskbar) --- */
+.taskbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 48px;
+  background-color: var(--win11-mica);
+  backdrop-filter: blur(18px);
+  border-top: 1px solid var(--win11-border);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10px;
+  z-index: 1000;
+}
+
+.taskbar-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.start-button {
+  background: none;
+  border: none;
+  height: 40px;
+  width: 40px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.2s, transform 0.1s;
+  margin: 0 5px;
+}
+
+.start-button:hover {
+  background-color: var(--win11-hover-bg);
+}
+
+.start-button:active {
+  transform: scale(0.98);
+}
+
+.start-button img {
+  width: 20px;
+  height: 20px;
+}
+
+.taskbar-right {
+  position: absolute;
+  right: 10px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  padding: 0 10px;
+  cursor: default;
+  border-left: 1px solid transparent;
+  transition: border-left 0.1s;
+}
+
+.taskbar-right:hover {
+  border-left: 1px solid var(--win11-border);
+}
+
+.time-date {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.2;
+  padding: 0 8px;
+}
+
+/* --- Styles des Applications Actives dans la Barre des Tâches --- */
+.active-apps {
+  display: flex;
+  margin-left: 10px;
+}
+
+.taskbar-app-icon {
+  background: none;
+  border: none;
+  height: 40px;
+  width: 40px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.2s, border-bottom 0.2s;
+  margin: 0 3px;
+  font-size: 1.2rem;
+}
+
+.taskbar-app-icon:hover {
+  background-color: var(--win11-hover-bg);
+}
+
+.taskbar-app-icon.active {
+  border-bottom: 3px solid var(--win11-accent);
+  background-color: color-mix(in srgb, var(--win11-text) 5%, transparent);
+}
+
+/* --- Menu Démarrer --- */
+.start-menu {
+  position: absolute;
+  bottom: 60px;
+  background-color: var(--win11-mica);
+  backdrop-filter: blur(18px);
+  width: 550px;
+  height: 550px;
+  border-radius: var(--win11-radius);
+  box-shadow: var(--win11-shadow);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  z-index: 999;
+  transform-origin: center bottom;
+  animation: startMenuOpen 0.2s ease-out forwards;
+}
+
+@keyframes startMenuOpen {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.start-menu h2 {
+  font-size: 1.2rem;
+  color: var(--win11-text);
+  margin: 10px 0;
+}
+
+.pinned, .recommended {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--win11-border); /* CORRIGÉ: Utilise la variable thématique */
+  margin-bottom: 15px;
+}
+
+.start-menu-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid var(--win11-border); /* CORRIGÉ: Utilise la variable thématique */
+}
+
+.profile-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: background-color 0.1s;
+  color: var(--win11-text); /* Ajouté pour le thème */
+}
+
+.profile-button:hover {
+  background-color: var(--win11-hover-bg);
+}
+
+.profile-button img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.power-button {
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  border-radius: 4px;
+  transition: background-color 0.1s;
+  color: var(--win11-text); /* Ajouté pour le thème */
+}
+.power-button:hover {
+  background-color: var(--win11-hover-bg);
+}
+
+/* --- Tuile (Tile) --- */
+.tile {
+  width: 100px;
+  height: 100px;
+  background-color: var(--win11-tile-bg);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  padding: 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.tile:hover {
+  background-color: color-mix(in srgb, var(--win11-text) 10%, transparent);
+}
+.tile:active {
+  transform: scale(0.98);
+}
+
+.tile img {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 5px;
+}
+
+.tile span {
+  font-size: 0.75rem;
+  color: var(--win11-tile-text);
+}
+
+/* --- Fenêtre d'Application (CvWindow) --- */
+
+.window-container {
+  background-color: var(--win11-window-bg);
+  border-radius: var(--win11-radius);
+  box-shadow: var(--win11-shadow);
+  overflow: hidden;
+  border: 1px solid var(--win11-border);
+  transition: border 0.2s;
+}
+
+.window-container.focused {
+  border: 1px solid var(--win11-accent);
+}
+
+.window-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 5px 4px 15px;
+  background-color: var(--win11-acrylic);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--win11-border);
+  cursor: grab;
+  user-select: none;
+}
+
+.window-title {
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: var(--win11-text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.window-controls button {
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.1s, color 0.1s;
+  border-radius: 0;
+  height: 38px;
+  width: 45px;
+  color: var(--win11-text);
+}
+
+.window-controls button:nth-child(1):hover,
+.window-controls button:nth-child(2):hover {
+  background-color: var(--win11-hover-bg);
+  color: var(--win11-text);
+}
+
+.window-controls .close-btn:hover {
+  background-color: #e81123;
+  color: white;
+}
+
+.window-content {
+  padding: 15px 20px;
+  overflow-y: auto;
+  flex-grow: 1;
+  background-color: var(--win11-window-bg);
+  color: var(--win11-text);
+  line-height: 1.6;
+}
+
+.window-content h3 {
+  color: var(--win11-accent);
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--win11-border);
+  padding-bottom: 5px;
+  font-size: 1.4rem;
+}
+.window-content h4 {
+  color: var(--win11-text);
+  margin-top: 20px;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+}
+.window-content ul {
+  list-style: none;
+  padding-left: 0;
+  margin-left: 15px;
+}
+.window-content li {
+  position: relative;
+  margin-bottom: 5px;
+}
+.window-content li::before {
+  content: '•';
+  color: var(--win11-accent);
+  position: absolute;
+  left: -15px;
+}
+.window-content p {
+  margin-bottom: 10px;
+}
+.window-content a {
+  color: var(--win11-accent);
+  text-decoration: none;
+}
+.window-content a:hover {
+  text-decoration: underline;
+}
+
+/* Page des Paramètres (Changement de Fond d'écran) */
+.settings-content {
+  padding: 20px;
+}
+.settings-content h3 {
+  color: var(--win11-text);
+  margin-bottom: 20px;
+}
+.settings-content label {
+  color: var(--win11-text);
+}
+.wallpaper-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.wallpaper-option {
+  width: 150px;
+  height: 90px;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.wallpaper-option:hover {
+  border-color: color-mix(in srgb, var(--win11-text) 30%, transparent);
+}
+.wallpaper-option.selected {
+  border-color: var(--win11-accent);
+  box-shadow: 0 0 0 2px var(--win11-accent);
+}
+.wallpaper-option img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.wallpaper-option span {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.8rem;
+  text-align: center;
+  color: var(--win11-text);
+}
+
+/* Toast/Notifications  */
+.toast-container {
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast {
+  background-color: var(--win11-mica);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--win11-border);
+  border-radius: var(--win11-radius);
+  box-shadow: var(--win11-shadow);
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--win11-text);
+  animation: fadeInOut 4s ease-out forwards;
+}
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateX(100%); }
+  10% { opacity: 1; transform: translateX(0); }
+  90% { opacity: 1; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(100%); }
+}
+
+/* --- Écran de Démarrage (BootScreen) --- */
+
+.boot-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  transition: opacity 1s;
+}
+
+.boot-spinner-large {
+  margin-top: 30px;
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
+/* --- Écran de Connexion (LockScreen) --- */
+.lock-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1500;
+  transition: opacity 0.5s;
+  /*
+  filter: blur(50px);
+  */
+}
+
+.login-form {
+    background-color: var(--win11-mica) ;
+  /*
+  filter: blur(50px);
+  */
+  padding: 40px;
+  border-radius: var(--win11-radius);
+  box-shadow: var(--win11-shadow);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-form img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.login-form h2 {
+  color: var(--win11-text);
+  margin-bottom: 30px;
+}
+
+.password-input {
+  padding: 10px;
+  font-size: 1.1rem;
+  width: 250px;
+  border: 1px solid var(--win11-border);
+  border-radius: 4px;
+  background-color: var(--win11-window-bg);
+  color: var(--win11-text);
+  margin-bottom: 10px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.password-input:focus {
+  outline: none;
+  border-color: var(--win11-accent);
+  box-shadow: 0 0 0 1px var(--win11-accent);
+}
+
+.login-button {
+  background-color: var(--win11-accent);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.login-button:hover {
+  background-color: color-mix(in srgb, var(--win11-accent) 80%, black);
+}
