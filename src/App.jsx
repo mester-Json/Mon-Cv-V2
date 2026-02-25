@@ -10,10 +10,11 @@ import WINDOW_DATA from "./components/Data/WindowData.jsx";
 import './index.css';
 import win11Default from './assets/wallpapers/win11-default.jpg';
 
-
+const GITHUB_USERNAME = 'mester-Json';
 
 const App = () => {
     const [bootState, setBootState] = useState('booting');
+    const [isShuttingDown, setIsShuttingDown] = useState(false); // NOUVEAU
     const [isStartMenuOpen, setIsStartMenuOpen] = useState(false);
     const [openWindows, setOpenWindows] = useState({});
     const [topZIndex, setTopZIndex] = useState(100);
@@ -26,6 +27,10 @@ const App = () => {
     const [theme, setThemeState] = useState(() => {
         return localStorage.getItem('theme') || 'light';
     });
+
+    const [latestProject, setLatestProject] = useState(null);
+    const [allProjects, setAllProjects] = useState(null);
+
 
     useEffect(() => {
         document.body.className = theme === 'dark' ? 'dark-mode' : '';
@@ -41,6 +46,69 @@ const App = () => {
     const openAudioRef = useRef(null);
     const closeAudioRef = useRef(null);
 
+    const toggleStartMenu = () => {
+        setIsStartMenuOpen(prev => !prev);
+    };
+
+    // NOUVEAU : Fonction de shutdown
+    const handleShutdown = () => {
+        setIsShuttingDown(true);
+        setBootState('booting');
+    };
+
+    const fetchGithubProjects = async () => {
+        try {
+            const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&direction=desc`);
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP: ${response.status}`);
+            }
+            const repos = await response.json();
+
+            const filteredProjects = repos
+                .filter(repo => !repo.fork && repo.name !== GITHUB_USERNAME.toLowerCase())
+                .map(repo => ({
+                    key: repo.name,
+                    shortTitle: repo.name.replace(/-/g, ' '),
+                    title: repo.name.replace(/-/g, ' '),
+                    url: repo.html_url,
+                    description: repo.description || "Pas de description fournie.",
+                    language: repo.language || "Non spécifié",
+                    updatedAt: new Date(repo.updated_at).toLocaleDateString('fr-FR'),
+                }));
+
+            setAllProjects(filteredProjects);
+
+            if (filteredProjects.length > 0) {
+                const latest = filteredProjects[0];
+                setLatestProject({
+                    name: latest.shortTitle,
+                    updatedAt: latest.updatedAt,
+                    url: latest.url,
+                });
+            } else {
+                setLatestProject({
+                    name: 'Aucun projet trouvé',
+                    updatedAt: new Date().toLocaleDateString('fr-FR'),
+                    url: '#',
+                });
+            }
+        } catch (error) {
+            console.error("Erreur lors de la récupération des projets GitHub:", error);
+            setLatestProject({
+                name: 'Projets GitHub indisponibles',
+                updatedAt: new Date().toLocaleDateString('fr-FR'),
+                url: '#',
+                error: true
+            });
+            setAllProjects([]);
+        }
+    };
+
+    useEffect(() => {
+        fetchGithubProjects();
+    }, []);
+
+
     const setCurrentWallpaper = (wallpaperKey) => {
         setCurrentWallpaperState(wallpaperKey);
         localStorage.setItem('wallpaper', wallpaperKey);
@@ -54,7 +122,6 @@ const App = () => {
     const getWallpaperPath = (key) => {
         switch(key) {
             case 'win11-default': return win11Default;
-
             default: return win11Default;
         }
     };
@@ -128,7 +195,7 @@ const App = () => {
     };
 
     if (bootState === 'booting') {
-        return <BootScreen onBootComplete={() => setBootState('locked')} />;
+        return <BootScreen onBootComplete={() => setBootState('locked')} isShutdown={isShuttingDown} />;
     }
 
     if (bootState === 'locked') {
@@ -147,7 +214,7 @@ const App = () => {
 
 
     return (
-        <div className="App">
+        <div className={`app-container ${theme === 'dark' ? 'dark-mode' : ''}`}>
 
             <div className="desktop" style={{ backgroundImage: `url(${getWallpaperPath(currentWallpaper)})` }}>
                 <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: 'calc(100% - 48px)' }}>
@@ -170,6 +237,8 @@ const App = () => {
                         openWindow={openWindow}
                         WINDOW_DATA={WINDOW_DATA}
                         setIsStartMenuOpen={setIsStartMenuOpen}
+                        latestProject={latestProject}
+                        onShutdown={handleShutdown}
                     />
                 )}
 
@@ -179,7 +248,13 @@ const App = () => {
                         appKey={key}
                         title={windowProps.title}
                         icon={windowProps.icon}
-                        content={key === 'SETTINGS' ? WINDOW_DATA.SETTINGS.content(setCurrentWallpaper, currentWallpaper, theme, setTheme) : windowProps.content()}
+                        content={
+                            key === 'SETTINGS'
+                                ? WINDOW_DATA.SETTINGS.content(setCurrentWallpaper, currentWallpaper, theme, setTheme)
+                                : key === 'PROJECTS'
+                                    ? WINDOW_DATA.PROJECTS.content(allProjects)
+                                    : windowProps.content()
+                        }
                         x={windowProps.x}
                         y={windowProps.y}
                         width={windowProps.width}
@@ -197,13 +272,7 @@ const App = () => {
 
             <Taskbar
                 isStartMenuOpen={isStartMenuOpen}
-
-
-/*
                 toggleStartMenu={toggleStartMenu}
-*/
-
-
                 activeApps={activeApps}
                 restoreWindow={openWindow}
                 focusWindow={focusWindow}

@@ -20,7 +20,7 @@ const Taskbar = ({ isStartMenuOpen, toggleStartMenu, activeApps, restoreWindow, 
     const handleClickApp = (key, isMinimized) => {
         if (isMinimized) {
             restoreWindow(key);
-            openAudioRef.current.play();
+            // openAudioRef.current.play();
         } else {
             focusWindow(key);
         }
@@ -28,8 +28,7 @@ const Taskbar = ({ isStartMenuOpen, toggleStartMenu, activeApps, restoreWindow, 
 
     return (
         <div className="taskbar">
-            {/* Balises audio cachées */}
-       {/*  <audio ref={openAudioRef} src={openSound} preload="auto" />
+            {/* <audio ref={openAudioRef} src={openSound} preload="auto" />
             <audio ref={closeAudioRef} src={closeSound} preload="auto" />
        */}
             <div className="taskbar-center">

@@ -1,19 +1,31 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../index.css';
 
-const BootScreen = ({ onBootComplete }) => {
+const BootScreen = ({ onBootComplete, isShutdown = false }) => {
+    const [showBlackScreen, setShowBlackScreen] = useState(false);
 
     useEffect(() => {
         const bootTime = 3000;
 
         const timer = setTimeout(() => {
-            onBootComplete();
+            if (isShutdown) {
+                setShowBlackScreen(true);
+            } else {
+                onBootComplete();
+            }
         }, bootTime);
 
         return () => {
             clearTimeout(timer);
         };
-    }, [onBootComplete]);
+    }, [onBootComplete, isShutdown]);
+
+    if (showBlackScreen) {
+        return (
+            <div className="boot-screen" style={{ background: '#000' }}>
+            </div>
+        );
+    }
 
     return (
         <div className="boot-screen">
