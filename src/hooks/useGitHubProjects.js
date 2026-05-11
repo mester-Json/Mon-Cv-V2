@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 
-const GITHUB_USERNAME = '';
+const GITHUB_USERNAME = 'mester-Json';
 
 export const useGitHubProjects = () => {
     const [latestProject, setLatestProject] = useState(null);
-    const [allProjects, setAllProjects] = useState(null);
+    const [allProjects, setAllProjects] = useState([]);
 
     const fetchGithubProjects = async () => {
+        if (!GITHUB_USERNAME) return;
         try {
             const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&direction=desc`);
             if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
