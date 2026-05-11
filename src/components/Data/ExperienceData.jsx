@@ -1,14 +1,31 @@
-import React from "react";
 
 const XP_DATA = [
     {
         key: 'xp_dawan',
+
         shortTitle: 'Dawan (Apprenti)',
-        title: "Apprenti Concepteur Développeur d'Application - Dawan",
+        title: "Apprenti Développeur Fullstack- Pardawan",
         content: (
             <>
-                <p>Conception et développement d'une application SIRH.</p>
-                <p><strong>Stack :</strong> React, Spring Boot.</p>
+                <p>
+                    10/2024 – 09/2025 | Lille , France
+                </p>
+                <p>
+                    • Projet : Conception et développement complet d'une application SIRH
+                </p>
+                <p> • Backend : Développement d'une architecture backend sous Java
+                    Spring Boot, incluant la mise en place d'une API REST et la gestion de
+                    bases de données SGBD.
+                </p>
+                <p>
+                    • Frontend & UX : Création d'une interface utilisateur intuitive sous
+                    ReactJS. Création de maquette Figma
+                </p>
+                <p>
+                    • Méthodologie & DevOps : Collaboration active au sein d'une
+                    méthodologie Agile avec l'intégration continue (CI/CD) de l'outil
+                    GitLab.
+                </p>
             </>
         )
     },
@@ -18,9 +35,29 @@ const XP_DATA = [
         title: "Stagiaire Développeur Full Stack - Hizen dev",
         content: (
             <>
-                <p>Création d'une application de location de serveur.</p>
-                <p><strong>Stack :</strong> React, Node.js, Express, l'API PayPal.</p>
-                <p><strong>App :</strong> VS Code, Paypal.</p>
+                <p>
+                    02/2024 – 03/2024 | Lille, France
+                </p>
+                <p>
+                    • Conception d'une Plateforme E-commerce : Développement d'une
+                    solution Full-Stack dédiée à la location de serveurs.
+
+                </p>
+                <p> • Frontend : Création d'une interface utilisateur sous React.
+
+                </p>
+                <p>
+                    • Backend : Mise en place d'une architecture backend utilisant Node.js et
+                    le framework Express.
+                </p>
+                <p>
+                    • Intégration de Solutions de Paiement : Implémentation de l'API REST
+                    PayPal pour les solutions de paiement
+                </p>
+                <p>
+                    • Sécurité des Données : gestion de compte utilisateur , leur solde et
+                    hachage des donnée sensible
+                </p>
             </>
         )
     },
@@ -30,9 +67,13 @@ const XP_DATA = [
         title: "Stagiaire Développeur Web - Mairie de Seclin",
         content: (
             <>
-                <p>Codage d'une signature électronique.</p>
-                <p><strong>Stack :</strong> HTML, CSS.</p>
-                <p><strong>App :</strong> VS Code.</p>
+                <p>
+                    04/2023 – 06/2023 | Seclin, France
+                </p>
+                <p>
+                    • Développé un module de signature électronique en HTML, CSS et
+                    JavaScript vanilla pour les documents administratifs.
+                </p>
             </>
         )
     },

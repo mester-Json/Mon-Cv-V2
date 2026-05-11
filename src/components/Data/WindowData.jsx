@@ -1,116 +1,121 @@
 import React from "react";
-import FileExplorer from "../FileExplorer";
-import win11Default from '../../assets/wallpapers/win11-default.jpg';
-import MailApp from "../MailApp.jsx";
+import FileExplorer from "../Apps/FileExplorer";
+import MailApp from "../Apps/MailApp.jsx";
 import EDUCATION_DATA from "./EducationData.jsx";
 import XP_DATA from "./ExperienceData.jsx";
 import SKILLS_DATA from "./SkillsData.jsx";
+import ProfileData from "./ProfileData.jsx";
+import InterestData from "./InterestData.jsx";
+import SettingsData from "./SettingsData.jsx";
+import PrivacyData from "./PrivacyData.jsx";
+import { FileText, FolderOpen, Folder, Mail, Terminal, Settings, Heart } from 'lucide-react'
+
 
 const WINDOW_DATA = {
-    PROFILE: { title: " MonProfil.txt " , icon: '📝', content: () => (
-            <>
-                <h3>Mon Profil (Jayson Decubber)</h3>
-                <p>Développeur Full Stack de 23 ans, diplômé Bac+3 Concepteur Développeur d'Applications. Je maîtrise un large ensemble de langages et frameworks modernes <br/> (Java, PHP, JavaScript/TypeScript, React, Angular, Symfony,
-                    Spring Boot) ainsi que des outils DevOps tels que Docker et GitLab CI/CD.
-                    <br/> Fort de plusieurs expériences en développement d'applications web (SIRH, plateformes en ligne, solutions de location), j'applique les méthodologies Agile
-                    pour concevoir et maintenir des solutions fiables, performantes et évolutives.</p>
-                <p>Contact: decubberjayson@gmail.com | 07 63 88 03 95</p>
-                <p><a href="https://github.com/mester-Json" target="_blank" rel="noopener noreferrer">Mon GitHub</a> | <a href="https://www.linkedin.com/in/package-lock-json/" target="_blank" rel="noopener noreferrer">Mon LinkedIn</a></p>
-            </>
-        )},
-    SKILLS: { title: "Compétences", icon: '📁',
-        content: () => (
-            <FileExplorer
-                folderName="Compétences"
-                data={SKILLS_DATA}
-            />
-        ) },
-    XP: {
-        title: "Explorateur - Expériences Professionnelles",
-        icon: '📁',
-        content: () => (
-            <FileExplorer
-                folderName="Expériences Professionnelles"
-                data={XP_DATA}
-            />
+
+    NOTEPAD: {
+        title: "Bloc-notes",
+        icon: <FileText size={16} strokeWidth={1} />,
+        width: 600,
+        height: 450,
+        statusBar: true,
+        content: (props) => (
+            <Notepad content={props.content || props.children} />
         )
     },
 
-    EDUCATION: {
-        title: "Explorateur - Diplômes et Formations",
-        icon: '📁',
-        content: () => (
-            <FileExplorer
-                folderName="Diplômes et Formations"
-                data={EDUCATION_DATA}
-            />
+    PROFILE: {
+        title: " MonProfil.txt " ,
+        icon: <FileText size={35} strokeWidth={1} /> ,
+        content: (props) => <ProfileData openWindow={props.openWindow}/> ,
+        statusBar: true
+    } ,
+
+    SKILLS: {
+        title: "Compétences" ,
+        icon: <FolderOpen size={35} strokeWidth={1} />,
+        content: ({openWindow}) => (
+            <FileExplorer folderName="Compétences" data={SKILLS_DATA} openWindow={openWindow}/>
         )
-    },
+    } ,
+
+    XP: {
+        title: "Explorateur - Expériences Professionnelles" ,
+        icon: <FolderOpen size={35} strokeWidth={1} /> ,
+        content: ({openWindow}) => (
+            <FileExplorer folderName="Expériences Professionnelles" data={XP_DATA} openWindow={openWindow}/>
+        )
+    } ,
+
+    EDUCATION: {
+        title: "Explorateur - Diplômes et Formations" ,
+        icon: <FolderOpen size={35} strokeWidth={1}/> ,
+        content: ({openWindow}) => (
+            <FileExplorer folderName="Diplômes et Formations" data={EDUCATION_DATA} openWindow={openWindow}/>
+        )
+    } ,
 
     PROJECTS: {
         title: "Explorateur de fichiers - Mes Projets Personnels",
-        icon: '📁',
-    },
-    INTERESTS: { title: "Paramètres - Loisirs & Intérêts", icon: '🎮', content: () => (
-            <>
-                <h3>Loisirs & Intérêts</h3>
-                <ul>
-                    <li>Coder : Ma passion principale, la résolution de problèmes par la logique et le développement de solutions propres.</li>
-                    <li>Jeux Vidéo : Passionné par les mondes ouverts et les jeux de stratégie.</li>
-                    <li>Twitch : Veille active sur les tendances technologiques et e-sport.</li>
-                </ul>
-            </>
-        )},
-    MAIL: {
-        title: "Email",
-        icon: '📧',
-        content: () => <MailApp />
-    },
-    SETTINGS: {
-        title: "Paramètres - Personnalisation",
-        icon: '⚙️',
-        content: (setCurrentWallpaper, currentWallpaper, theme, setTheme) => (
-            <div className="settings-content" style={{ color: 'var(--win11-text)' }}>
-                <h3>Changer le fond d'écran</h3>
-                <div className="wallpaper-options">
-                    {Object.entries({
-                        'win11-default': win11Default,
-                    }).map(([key, path]) => (
-                        <div key={key}
-                             className={`wallpaper-option ${currentWallpaper === key ? 'selected' : ''}`}
-                             onClick={() => { setCurrentWallpaper(key); }}>
-                            <img src={path} alt={key} />
+        icon: <FolderOpen size={35} strokeWidth={1}/>,
+        content: (props) => (
+            <div className="projects-container">
+                {props.allProjects && props.allProjects.length > 0 ? (
+                    props.allProjects.map(repo => (
+                        <div key={repo.id} className="project-item">
+                            <Folder size={16} />
+                            <span>{repo.name}</span>
                         </div>
-                    ))}
-                </div>
-
-                <h3 style={{ marginTop: '30px' }}>Mode d'affichage</h3>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                    <label>
-                        <input
-                            type="radio"
-                            name="theme"
-                            value="light"
-                            checked={theme === 'light'}
-                            onChange={() => setTheme('light')}
-                        />
-                        Clair
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            name="theme"
-                            value="dark"
-                            checked={theme === 'dark'}
-                            onChange={() => setTheme('dark')}
-                        />
-                        Sombre
-                    </label>
-                </div>
+                    ))
+                ) : (
+                    <p>Chargement des projets GitHub...</p>
+                )}
             </div>
-
-        ),
+        )
     },
-};
 
+    MAIL: {
+        title: "Email" ,
+        icon: <Mail size={35} strokeWidth={1} /> ,
+        content: () => <MailApp/>
+    } ,
+
+    TERMINAL: {
+        title: "Terminal" ,
+        icon: <Terminal size={35} strokeWidth={1} /> ,
+        content: () => (
+            <div className="terminal-container">
+                <p>Microsoft Windows [version 10.0.22631.3447]</p>
+                <p>(c) Jayson Corp. Tous droits réservés.</p>
+                <br/>
+                <p>
+                    <span>C:\Users\Jayson&gt;</span>
+                    <span className="terminal-cursor">_</span>
+                </p>
+            </div>
+        )
+    } ,
+
+    SETTINGS: {
+        title: "Paramètres - Personnalisation" ,
+        icon: <Settings size={35} strokeWidth={1} /> ,
+        content: (props) =>
+            <SettingsData {...props}/>
+    },
+
+    INTERESTS: {
+        title: "Intérêts" ,
+        icon: <FolderOpen size={35} strokeWidth={1} /> ,
+        content: (props) => <InterestData openWindow={props.openWindow}/> ,
+        statusBar: true
+    },
+    PRIVACY: {
+        title: "Politique de Confidentialité.txt",
+        icon: <FileText size={16} strokeWidth={1} />,
+        width: 600,
+        height: 450,
+        statusBar: true,
+        content: () => PrivacyData
+    },
+}
 export default WINDOW_DATA;

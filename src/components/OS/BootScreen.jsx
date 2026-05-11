@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import '../index.css';
+import  { useEffect, useState } from 'react';
 
-const BootScreen = ({ onBootComplete, isShutdown = false }) => {
+const BootScreen = ({
+                        onBootComplete,
+                        isShutdown = false }) => {
+
     const [showBlackScreen, setShowBlackScreen] = useState(false);
 
     useEffect(() => {

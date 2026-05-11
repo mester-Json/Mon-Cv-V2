@@ -1,0 +1,110 @@
+.cookie-banner-container {
+    position: fixed;
+    bottom: 60px; /* Juste au-dessus de la taskbar */
+    right: 20px;
+    width: 350px;
+    z-index: 10000;
+    animation: slideInRight 0.5s cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+.cookie-banner-content {
+    background: var(--win11-window-bg); /* Utilise tes variables existantes */
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--win11-border);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    padding: 16px;
+    color: var(--win11-text);
+}
+
+.cookie-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.cookie-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.cookie-body p {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin-bottom: 16px;
+    opacity: 0.9;
+}
+
+.cookie-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.cookie-footer button {
+    padding: 6px 20px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: #0067c0;
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover { background: #0056a0; }
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--win11-text);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary:hover { background: rgba(255, 255, 255, 0.15); }
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.cookie-close {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--win11-text);
+    padding: 4px;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.cookie-close:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Un gris très léger au survol */
+}
+
+.dark-mode .cookie-close:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.cookie-link-button {
+    color: #2798F5;
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+    margin-left: 4px;
+}
+
+.cookie-link-button:hover {
+    text-decoration: underline;
+    color: #1e7ccb;
+}

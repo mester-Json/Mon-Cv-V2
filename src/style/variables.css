@@ -1,0 +1,37 @@
+:root {
+    --win11-text: #1f1f1f;
+    --win11-bg-light: #f3f3f3;
+    --win11-mica: rgba(243, 243, 243, 0.9);
+    --win11-acrylic: rgba(243, 243, 243, 0.7);
+    --win11-border: rgba(0, 0, 0, 0.1);
+    --win11-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    --win11-accent: #0067c0;
+    --win11-window-bg: white;
+    --win11-hover-bg: rgba(0, 0, 0, 0.08);
+    --win11-tile-bg: rgba(255, 255, 255, 0.7);
+    --win11-tile-text: #1f1f1f;
+    --bg-desktop: url('src/assets/wallpapers/win11-default.png');
+}
+
+[data-theme='dark'] {
+    --win11-text: #e0e0e0;
+    --win11-bg-light: #202020;
+    --win11-mica: rgba(32, 32, 32, 0.9);
+    --win11-acrylic: rgba(32, 32, 32, 0.7);
+    --win11-border: rgba(255, 255, 255, 0.15);
+    --win11-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+    --win11-accent: #3296fa;
+    --win11-window-bg: #2b2b2b;
+    --win11-hover-bg: rgba(255, 255, 255, 0.08);
+    --win11-tile-bg: rgba(43, 43, 43, 0.7);
+    --win11-tile-text: #e0e0e0;
+    --bg-desktop: url('src/assets/wallpapers/win11-dark.png');
+}
+
+* {
+    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}

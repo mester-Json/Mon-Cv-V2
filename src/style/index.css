@@ -1,0 +1,20 @@
+/* 1. Fondations (Variables en premier !) */
+@import "variables.css";
+@import "parametre.css";
+@import "layout.css";
+
+/* 2. Éléments de structure */
+@import "window.css";
+@import "components.css";
+
+/* 3. Modules de l'interface */
+@import "taskbar.css";
+@import "startmenu.css";
+@import "desktop.css";
+@import "folder.css";
+
+/* 4. Applications spécifiques */
+@import "terminal.css";
+@import "notepade.css";
+
+@import "cookiebanner.css";

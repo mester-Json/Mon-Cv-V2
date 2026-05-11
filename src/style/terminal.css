@@ -1,0 +1,29 @@
+.terminal-container {
+    background-color: #0c0c0c;
+    color: #cccccc;
+    font-family: 'Consolas', 'Courier New', monospace;
+    height: 100%;
+    padding: 10px;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.terminal-line { margin-bottom: 4px; white-space: pre-wrap; }
+.terminal-line.user { color: #ffffff; }
+.terminal-line.error { color: #ff5f56; }
+.terminal-line.info { color: #00d7af; }
+
+.terminal-input-line { display: flex; align-items: center; }
+.terminal-prompt { color: #cccccc; margin-right: 8px; }
+
+.terminal-input-line input {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: inherit;
+    outline: none;
+    flex-grow: 1;
+}

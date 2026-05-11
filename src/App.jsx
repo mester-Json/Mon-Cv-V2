@@ -1,283 +1,82 @@
-import React, { useState, useRef, useEffect } from 'react';
-import Taskbar from './components/Taskbar';
-import StartMenu from './components/StartMenu';
-import CvWindow from './components/CvWindow';
-import DesktopIcon from './components/DesktopIcon';
-import BootScreen from './components/BootScreen';
-import LockScreen from './components/LockScreen';
-import desktopIconsData from "./components/Data/DesktopIconsData.jsx";
-import WINDOW_DATA from "./components/Data/WindowData.jsx";
-import './index.css';
-import win11Default from './assets/wallpapers/win11-default.jpg';
+import { useRef } from 'react';
 
-const GITHUB_USERNAME = 'mester-Json';
+import { useTheme } from './hooks/useTheme';
+import { useSystemState } from './hooks/useSystemState';
+import { useWindowManager } from './hooks/useWindowManager';
+import { useGitHubProjects } from './hooks/useGitHubProjects';
+
+import BootScreen from '../src/components/OS/BootScreen.jsx';
+import LockScreen from '../src/components/OS/LockScreen';
+import DesktopView from '../src/components/Layout/DesktopView';
+
+import './style/index.css';
 
 const App = () => {
-    const [bootState, setBootState] = useState('booting');
-    const [isShuttingDown, setIsShuttingDown] = useState(false); // NOUVEAU
-    const [isStartMenuOpen, setIsStartMenuOpen] = useState(false);
-    const [openWindows, setOpenWindows] = useState({});
-    const [topZIndex, setTopZIndex] = useState(100);
-    const [desktopIcons, setDesktopIcons] = useState(desktopIconsData);
+    const { theme, setTheme } = useTheme();
 
-    const [currentWallpaper, setCurrentWallpaperState] = useState(() => {
-        return localStorage.getItem('wallpaper') || 'win11-default';
-    });
+    const {
+        bootState,
+        setBootState,
+        isShuttingDown,
+        setIsShuttingDown,
+        activeNotif,
+        setActiveNotif
+    } = useSystemState(theme);
 
-    const [theme, setThemeState] = useState(() => {
-        return localStorage.getItem('theme') || 'light';
-    });
+    const windowTools = useWindowManager();
 
-    const [latestProject, setLatestProject] = useState(null);
-    const [allProjects, setAllProjects] = useState(null);
-
-
-    useEffect(() => {
-        document.body.className = theme === 'dark' ? 'dark-mode' : '';
-    }, [theme]);
-
-    const playSound = (audioRef) => {
-        if (audioRef.current) {
-            audioRef.current.currentTime = 0;
-            audioRef.current.play().catch(e => console.error("Error playing sound:", e));
-        }
-    };
+    const { latestProject, allProjects } = useGitHubProjects();
 
     const openAudioRef = useRef(null);
     const closeAudioRef = useRef(null);
 
-    const toggleStartMenu = () => {
-        setIsStartMenuOpen(prev => !prev);
-    };
-
-    // NOUVEAU : Fonction de shutdown
-    const handleShutdown = () => {
-        setIsShuttingDown(true);
-        setBootState('booting');
-    };
-
-    const fetchGithubProjects = async () => {
-        try {
-            const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&direction=desc`);
-            if (!response.ok) {
-                throw new Error(`Erreur HTTP: ${response.status}`);
-            }
-            const repos = await response.json();
-
-            const filteredProjects = repos
-                .filter(repo => !repo.fork && repo.name !== GITHUB_USERNAME.toLowerCase())
-                .map(repo => ({
-                    key: repo.name,
-                    shortTitle: repo.name.replace(/-/g, ' '),
-                    title: repo.name.replace(/-/g, ' '),
-                    url: repo.html_url,
-                    description: repo.description || "Pas de description fournie.",
-                    language: repo.language || "Non spécifié",
-                    updatedAt: new Date(repo.updated_at).toLocaleDateString('fr-FR'),
-                }));
-
-            setAllProjects(filteredProjects);
-
-            if (filteredProjects.length > 0) {
-                const latest = filteredProjects[0];
-                setLatestProject({
-                    name: latest.shortTitle,
-                    updatedAt: latest.updatedAt,
-                    url: latest.url,
-                });
-            } else {
-                setLatestProject({
-                    name: 'Aucun projet trouvé',
-                    updatedAt: new Date().toLocaleDateString('fr-FR'),
-                    url: '#',
-                });
-            }
-        } catch (error) {
-            console.error("Erreur lors de la récupération des projets GitHub:", error);
-            setLatestProject({
-                name: 'Projets GitHub indisponibles',
-                updatedAt: new Date().toLocaleDateString('fr-FR'),
-                url: '#',
-                error: true
-            });
-            setAllProjects([]);
+    const playSound = (audioRef) => {
+        if (audioRef?.current) {
+            audioRef.current.currentTime = 0;
+            audioRef.current.play().catch((err) => console.log("Audio play blocked:", err));
         }
-    };
-
-    useEffect(() => {
-        fetchGithubProjects();
-    }, []);
-
-
-    const setCurrentWallpaper = (wallpaperKey) => {
-        setCurrentWallpaperState(wallpaperKey);
-        localStorage.setItem('wallpaper', wallpaperKey);
-    };
-
-    const setTheme = (newTheme) => {
-        setThemeState(newTheme);
-        localStorage.setItem('theme', newTheme);
-    };
-
-    const getWallpaperPath = (key) => {
-        switch(key) {
-            case 'win11-default': return win11Default;
-            default: return win11Default;
-        }
-    };
-
-    const focusWindow = (key) => {
-        setTopZIndex(prev => prev + 1);
-        setOpenWindows(prev => ({
-            ...prev,
-            [key]: {
-                ...prev[key],
-                minimized: false,
-                zIndex: topZIndex + 1
-            }
-        }));
-    };
-
-    const openWindow = (key) => {
-        setIsStartMenuOpen(false);
-        setTopZIndex(prev => prev + 1);
-
-        setOpenWindows(prev => {
-            const newWindows = { ...prev };
-            const offset = Object.keys(newWindows).length * 20;
-
-            newWindows[key] = {
-                ...WINDOW_DATA[key],
-                ...prev[key],
-                minimized: false,
-                zIndex: topZIndex + 1,
-                x: prev[key] && prev[key].x !== undefined ? prev[key].x : window.innerWidth / 2 - 350 + offset,
-                y: prev[key] && prev[key].y !== undefined ? prev[key].y : window.innerHeight / 2 - 250 + offset,
-                width: prev[key] && prev[key].width !== undefined ? prev[key].width : 700,
-                height: prev[key] && prev[key].height !== undefined ? prev[key].height : 500,
-            };
-            return newWindows;
-        });
-        playSound(openAudioRef);
-    };
-
-    const closeWindow = (key) => {
-        setOpenWindows(prev => {
-            const newState = { ...prev };
-            delete newState[key];
-            return newState;
-        });
-        playSound(closeAudioRef);
-    };
-
-    const minimizeWindow = (key) => {
-        setOpenWindows(prev => ({
-            ...prev,
-            [key]: { ...prev[key], minimized: true }
-        }));
-    };
-
-    const updateWindowDimensions = (key, data) => {
-        setOpenWindows(prev => ({
-            ...prev,
-            [key]: {
-                ...prev[key],
-                ...data
-            }
-        }));
-    };
-
-    const handleDesktopIconDragStop = (id, x, y) => {
-        setDesktopIcons(prev => ({
-            ...prev,
-            [id]: { ...prev[id], initialX: x, initialY: y }
-        }));
     };
 
     if (bootState === 'booting') {
-        return <BootScreen onBootComplete={() => setBootState('locked')} isShutdown={isShuttingDown} />;
+        return (
+            <BootScreen
+                onBootComplete={() => setBootState('locked')}
+                isShutdown={isShuttingDown}
+            />
+        );
     }
 
     if (bootState === 'locked') {
-        return <LockScreen onLogin={() => setBootState('desktop')} theme={theme} />;
+        return (
+            <LockScreen
+                onLogin={() => setBootState('desktop')}
+                theme={theme}
+            />
+        );
     }
-
-    const activeAppKeys = Object.keys(openWindows);
-    const activeApps = activeAppKeys.map(key => ({
-        key,
-        title: WINDOW_DATA[key].title,
-        icon: WINDOW_DATA[key].icon,
-        minimized: openWindows[key].minimized,
-    }));
-
-    const focusedAppKey = activeAppKeys.sort((a, b) => (openWindows[b]?.zIndex || 0) - (openWindows[a]?.zIndex || 0))[0];
 
 
     return (
         <div className={`app-container ${theme === 'dark' ? 'dark-mode' : ''}`}>
 
-            <div className="desktop" style={{ backgroundImage: `url(${getWallpaperPath(currentWallpaper)})` }}>
-                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: 'calc(100% - 48px)' }}>
-                    {Object.values(desktopIcons).map(icon => (
-                        <DesktopIcon
-                            key={icon.id}
-                            id={icon.id}
-                            label={icon.label}
-                            iconSrc={icon.icon}
-                            initialX={icon.initialX}
-                            initialY={icon.initialY}
-                            onClick={() => openWindow(icon.appKey)}
-                            onDragStop={handleDesktopIconDragStop}
-                        />
-                    ))}
-                </div>
-
-                {isStartMenuOpen && (
-                    <StartMenu
-                        openWindow={openWindow}
-                        WINDOW_DATA={WINDOW_DATA}
-                        setIsStartMenuOpen={setIsStartMenuOpen}
-                        latestProject={latestProject}
-                        onShutdown={handleShutdown}
-                    />
-                )}
-
-                {Object.entries(openWindows).map(([key, windowProps]) => (
-                    <CvWindow
-                        key={key}
-                        appKey={key}
-                        title={windowProps.title}
-                        icon={windowProps.icon}
-                        content={
-                            key === 'SETTINGS'
-                                ? WINDOW_DATA.SETTINGS.content(setCurrentWallpaper, currentWallpaper, theme, setTheme)
-                                : key === 'PROJECTS'
-                                    ? WINDOW_DATA.PROJECTS.content(allProjects)
-                                    : windowProps.content()
-                        }
-                        x={windowProps.x}
-                        y={windowProps.y}
-                        width={windowProps.width}
-                        height={windowProps.height}
-                        minimized={windowProps.minimized}
-                        zIndex={windowProps.zIndex}
-                        isFocused={key === focusedAppKey && !windowProps.minimized}
-                        onClose={() => closeWindow(key)}
-                        onMinimize={() => minimizeWindow(key)}
-                        onFocus={() => focusWindow(key)}
-                        onUpdateDimensions={updateWindowDimensions}
-                    />
-                ))}
-            </div>
-
-            <Taskbar
-                isStartMenuOpen={isStartMenuOpen}
-                toggleStartMenu={toggleStartMenu}
-                activeApps={activeApps}
-                restoreWindow={openWindow}
-                focusWindow={focusWindow}
-                focusedAppKey={focusedAppKey}
+            <DesktopView
+                theme={theme}
+                setTheme={setTheme}
+                activeNotif={activeNotif}
+                setActiveNotif={setActiveNotif}
+                latestProject={latestProject}
+                allProjects={allProjects}
+                onShutdown={() => {
+                    setIsShuttingDown(true);
+                    setBootState('booting');
+                }}
+                playSoundOpen={() => playSound(openAudioRef)}
+                playSoundClose={() => playSound(closeAudioRef)}
+                {...windowTools}
             />
+
+            <audio ref={openAudioRef} src="/sounds/open.mp3" preload="auto" />
+            <audio ref={closeAudioRef} src="/sounds/close.mp3" preload="auto" />
         </div>
     );
 };

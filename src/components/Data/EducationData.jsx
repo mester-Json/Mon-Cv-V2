@@ -1,53 +1,145 @@
-import React from "react";
 
 const EDUCATION_DATA = [
+
+    {
+        key:'ibd_dawan',
+        shortTitle: 'IBD Dawan',
+        title: "Application Intelligente et Big Data - Dawan" ,
+        content: (
+            <>
+                <p>
+                    11/2025 – 02/2026 | Lille, France
+                </p>
+                <p>
+                    • Big Data : Approfondissement de l'écosystème Hadoop et traitement
+                    des données Big Data sous Java
+                </p>
+                <p>
+                    • Gestion de Projet & Méthodologies : Maîtrise des cycles de vie et de
+                    planification des projets
+                </p>
+                <p>
+                    • Développement Mobile : Conception d'architecture d'applications
+                    mobiles avec Android Studio
+                </p>
+            </>
+        )
+    },
+
     {
         key: 'cda_dawan',
         shortTitle: 'CDA Dawan',
-        title: "Concepteur Développeur d'Application (Bac+3) - Dawan (10/2024-09/2025)",
+        title: "Concepteur Développeur d'Application - Dawan",
         content: (
             <>
-                <p>Formation approfondie en POO, Architecture logicielle, Tests, Technologies Web et APIs REST[cite: 27, 29].</p>
-                <p><strong>Stack principale :</strong> Angular, Java Spring Boot, MongoDB[cite: 29].</p>
-                <p><strong>Outils/Méthodes :</strong> Git, IntelliJ IDEA, GitLab CI/CD, Méthode Agile[cite: 30, 31].</p>
+                <p>
+                    10/2024 – 09/2025 | Lille, France
+                </p>
+                <p>
+                    • Architecture & Qualité Logicielle : Approfondissement des principes
+                    de la Programmation Orientée Objet (POO) et des Design Patterns
+                </p>
+                <p>
+                    • TDD : avec JUnit
+                </p>
+                • Backend : Développement d'une API REST sous Java Spring Boot.
+                <p>
+                    • Frontend : Création d'une interface utilisateur sous Angular ou React.
+                </p>
+                <p>
+                    • Base de Donnée: Modélisation et gestion des données via une base
+                    relationnelle SQL ou NoSQL.
+
+                </p>
             </>
         )
     },
     {
         key: 'poei_java',
         shortTitle: 'POEI Java',
-        title: "POEI Java - Dawan (07/2024-10/2024)",
+        title: "POEI Java - Dawan ",
         content: (
             <>
-                <p>Projet : Développement d'une Application Web pour un site de rencontre[cite: 35].</p>
-                <p><strong>Stack :</strong> Java Spring Boot, UML, React[cite: 36].</p>
-                <p><strong>Méthodes :</strong> Agile[cite: 38].</p>
+                <p>
+                    07/2024 – 10/2024 | Lille, France
+                </p>
+                <p>
+                    • Projet de développement d'une application web de A à Z en environnement Agile.
+                </p>
+                <p>
+                    • Mise en œuvre d'une stack technique complète : Java Spring Boot et ReactJS.
+                </p>
             </>
         )
     },
     {
         key: 'ms_fullstack',
         shortTitle: 'MS Full Stack',
-        title: "Ms Développeur Full Stack - Afpa (01/2024-03/2024)",
+        title: "Ms Développeur Full Stack - Afpa ",
         content: (
             <>
-               <p>Formation sur la stack PHP/JavaScript[cite: 41].</p>
-               <p><strong>Outils :</strong> Git[cite: 42].</p>
+                <p>
+                    01/2024 – 03/2024 | Roubaix, France
+                </p>
+                <p>
+                    • Formation accélérée sur les fondamentaux du développement Full-Stack.
+                </p>
+                <p>
+                    • Maîtrise des langages PHP et JavaScript, et de l'outil de versioning Git.
+                </p>
             </>
         )
     },
     {
         key: 'dev_web_pop',
         shortTitle: 'DWWM Pop',
-        title: "Développeur Web, Web Mobile (Bac+2) - Centre de Formation Pop'Shcool (11/2022-06/2023)",
+        title: "Développeur Web, Web Mobile - Centre de Formation Pop'Shcool ",
         content: (
             <>
-                <p>Apprentissage des bases du développement logiciel, bases de données, réseaux et gestion de projets[cite: 43].</p>
-                <p><strong>Stack :</strong> HTML, CSS, JavaScript, PHP, BDD, React, Symfony[cite: 46].</p>
-                <p><strong>Outils :</strong> Linux, Git, Figma[cite: 47].</p>
+                <p>
+                    11/2022 – 06/2023 | Lens, France
+                </p>
+                <p>
+                    • Full-Stack : Apprentissage du cycle de développement d'une application web.
+                </p>
+                <p>
+                    • Front-end : Création d'interfaces utilisateur avec des composants réutilisables
+                    sous React.
+                </p>
+                <p>
+                    • Back-end : Création d'un backend sous PHP et Symfony.
+                </p>
+                <p>
+                    • Bases de Données : Conception et modélisation avec SQL.
+                </p>
+                <p>
+                    • UI/UX Design : Réalisation de maquettes interactives et prototypage sous Figma
+                    pour optimiser l'expérience utilisateur.
+                </p>
             </>
         )
     },
+    {
+        key : 'dev_php_simplon' ,
+        shortTitle: 'Dev PHP Simplon',
+        title: "Développeur Web PHP  - Simplon ",
+        content: (
+            <>
+                <p>
+                    09/2022 – 11/2022 | Lens, France
+                </p>
+                <p>
+                    • Introduction au développement web via le CMS WordPress.
+                </p>
+                <p>
+                    • Création de thèmes personnalisés et intégration de maquettes Figma.
+                </p>
+            </>
+
+        ),
+
+    }
+
 ];
 
 
